@@ -1,10 +1,7 @@
 // api-service.js for Netlify + Render deployment
 
 // Production API URL (will be set during Netlify build)
-const API_BASE =
-  process.env.REACT_APP_API_URL || window.location.hostname === 'localhost'
-    ? 'http://localhost:5000/api/students'
-    : 'https://student-result-api.onrender.com/api/students';
+const API_BASE = 'http://localhost:5000/api/students';
 
 console.log('API Base URL:', API_BASE);
 
