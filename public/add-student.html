@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Student - Result Management</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 800px;
+        padding: 40px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #f0f0f0;
+      }
+
+      .back-btn {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .back-btn:hover {
+        background: #5a6fd8;
+        transform: translateX(-5px);
+      }
+
+      h1 {
+        color: #2c3e50;
+        font-size: 2rem;
+        text-align: center;
+        flex-grow: 1;
+      }
+
+      .form-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group.full-width {
+        grid-column: 1 / -1;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #2c3e50;
+        font-weight: 600;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .submit-btn {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      .result-preview {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 30px;
+        border-left: 4px solid #667eea;
+      }
+
+      .result-preview h3 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+      }
+
+      .preview-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .preview-item:last-child {
+        border-bottom: none;
+      }
+
+      .preview-label {
+        font-weight: 600;
+        color: #7f8c8d;
+      }
+
+      .preview-value {
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      .message {
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+        text-align: center;
+        display: none;
+      }
+
+      .message.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        display: block;
+      }
+
+      .message.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        display: block;
+      }
+
+      @media (max-width: 768px) {
+        .form-container {
+          grid-template-columns: 1fr;
+        }
+
+        .container {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <a href="/" class="back-btn">← Back to Dashboard</a>
+        <h1>➕ Add New Student</h1>
+      </div>
+
+      <div class="message" id="message"></div>
+
+      <form id="addStudentForm">
+        <div class="form-container">
+          <div class="form-group">
+            <label for="roll">Roll Number *</label>
+            <input
+              type="number"
+              id="roll"
+              name="roll"
+              required
+              min="1"
+              placeholder="Enter roll number"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="name">Student Name *</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              placeholder="Enter full name"
+            />
+          </div>
+
+          <div class="form-group full-width">
+            <label for="subject">Subject *</label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              required
+              placeholder="Enter subject name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="full">Full Marks *</label>
+            <input
+              type="number"
+              id="full"
+              name="full"
+              required
+              min="1"
+              placeholder="e.g., 100"
+              value="100"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="pass">Pass Marks *</label>
+            <input
+              type="number"
+              id="pass"
+              name="pass"
+              required
+              min="0"
+              placeholder="e.g., 40"
+              value="40"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="obtain">Obtained Marks *</label>
+            <input
+              type="number"
+              id="obtain"
+              name="obtain"
+              required
+              min="0"
+              placeholder="Enter obtained marks"
+            />
+          </div>
+        </div>
+
+        <div class="result-preview" id="resultPreview">
+          <h3>Result Preview</h3>
+          <div class="preview-item">
+            <span class="preview-label">Percentage:</span>
+            <span class="preview-value" id="previewPercentage">--%</span>
+          </div>
+          <div class="preview-item">
+            <span class="preview-label">Result:</span>
+            <span class="preview-value" id="previewResult">--</span>
+          </div>
+          <div class="preview-item">
+            <span class="preview-label">Status:</span>
+            <span class="preview-value" id="previewStatus">--</span>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">➕ Add Student</button>
+      </form>
+    </div>
+
+    <script src="/js/api-service.js"></script>
+    <script>
+      // Calculate and preview result
+      function calculateResult() {
+        const full = parseFloat(document.getElementById('full').value) || 0;
+        const pass = parseFloat(document.getElementById('pass').value) || 0;
+        const obtain = parseFloat(document.getElementById('obtain').value) || 0;
+
+        if (full > 0 && obtain >= 0) {
+          const percentage = (obtain / full) * 100;
+          const result = obtain >= pass ? 'Pass' : 'Fail';
+          const status = obtain >= pass ? '✅ Passing' : '❌ Failing';
+
+          document.getElementById('previewPercentage').textContent =
+            percentage.toFixed(2) + '%';
+          document.getElementById('previewResult').textContent = result;
+          document.getElementById('previewResult').style.color =
+            result === 'Pass' ? '#27ae60' : '#e74c3c';
+          document.getElementById('previewStatus').textContent = status;
+          document.getElementById('previewStatus').style.color =
+            result === 'Pass' ? '#27ae60' : '#e74c3c';
+        }
+      }
+
+      // Form submission
+      document
+        .getElementById('addStudentForm')
+        .addEventListener('submit', async function (e) {
+          e.preventDefault();
+
+          const studentData = {
+            roll: parseInt(document.getElementById('roll').value),
+            name: document.getElementById('name').value,
+            subject: document.getElementById('subject').value,
+            full: parseInt(document.getElementById('full').value),
+            pass: parseInt(document.getElementById('pass').value),
+            obtain: parseInt(document.getElementById('obtain').value),
+          };
+
+          // Validate marks
+          if (studentData.obtain > studentData.full) {
+            showMessage('Obtained marks cannot exceed full marks!', 'error');
+            return;
+          }
+
+          const response = await StudentService.addStudent(studentData);
+
+          if (response.success) {
+            showMessage(
+              '✅ Student added successfully! Student ID: ' + response.data._id,
+              'success'
+            );
+            document.getElementById('addStudentForm').reset();
+            calculateResult();
+
+            // Auto-redirect after 2 seconds
+            setTimeout(() => {
+              window.location.href = '/view-students';
+            }, 2000);
+          } else {
+            showMessage('❌ Error: ' + response.error, 'error');
+          }
+        });
+
+      // Show message
+      function showMessage(text, type) {
+        const messageDiv = document.getElementById('message');
+        messageDiv.textContent = text;
+        messageDiv.className = 'message ' + type;
+        messageDiv.style.display = 'block';
+
+        setTimeout(() => {
+          messageDiv.style.display = 'none';
+        }, 5000);
+      }
+
+      // Recalculate on marks change
+      ['full', 'pass', 'obtain'].forEach((id) => {
+        document.getElementById(id).addEventListener('input', calculateResult);
+      });
+
+      // Initial calculation
+      document.addEventListener('DOMContentLoaded', calculateResult);
+    </script>
+  </body>
+</html>

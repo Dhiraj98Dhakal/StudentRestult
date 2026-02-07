@@ -1,0 +1,29 @@
+# .gitignore (Minimal)
+
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# MongoDB
+data/
+mongodb/
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Uploads
+uploads/

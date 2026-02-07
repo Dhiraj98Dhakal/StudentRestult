@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Student - Result Management</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 800px;
+        padding: 40px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #f0f0f0;
+      }
+
+      .back-btn {
+        background: #f5576c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .back-btn:hover {
+        background: #e74c3c;
+        transform: translateX(-5px);
+      }
+
+      h1 {
+        color: #2c3e50;
+        font-size: 2rem;
+        text-align: center;
+        flex-grow: 1;
+      }
+
+      .search-section {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        border-left: 4px solid #f5576c;
+      }
+
+      .search-form {
+        display: flex;
+        gap: 15px;
+        align-items: flex-end;
+      }
+
+      .form-group {
+        flex-grow: 1;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #2c3e50;
+        font-weight: 600;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #f5576c;
+      }
+
+      .btn {
+        padding: 12px 30px;
+        border-radius: 10px;
+        border: none;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-search {
+        background: #f5576c;
+        color: white;
+      }
+
+      .btn-search:hover {
+        background: #e74c3c;
+        transform: translateY(-2px);
+      }
+
+      .form-container {
+        display: none;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-top: 30px;
+      }
+
+      .form-container.active {
+        display: grid;
+      }
+
+      .form-group.full-width {
+        grid-column: 1 / -1;
+      }
+
+      .submit-btn {
+        background: linear-gradient(45deg, #f093fb, #f5576c);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+      }
+
+      .student-info {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 4px solid #2ecc71;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .info-item {
+        padding: 10px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .info-label {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        margin-bottom: 5px;
+      }
+
+      .info-value {
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      .message {
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+        text-align: center;
+        display: none;
+      }
+
+      .message.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        display: block;
+      }
+
+      .message.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        display: block;
+      }
+
+      .message.info {
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+        display: block;
+      }
+
+      @media (max-width: 768px) {
+        .form-container {
+          grid-template-columns: 1fr;
+        }
+
+        .container {
+          padding: 20px;
+        }
+
+        .search-form {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <a href="/" class="back-btn">← Back to Dashboard</a>
+        <h1>✏️ Update Student</h1>
+      </div>
+
+      <div class="message" id="message"></div>
+
+      <div class="search-section">
+        <h3>Search Student by Roll Number</h3>
+        <form id="searchForm" class="search-form">
+          <div class="form-group">
+            <label for="searchRoll">Enter Roll Number</label>
+            <input
+              type="number"
+              id="searchRoll"
+              required
+              min="1"
+              placeholder="e.g., 12"
+            />
+          </div>
+          <button type="submit" class="btn btn-search">
+            🔍 Search Student
+          </button>
+        </form>
+      </div>
+
+      <div class="student-info" id="studentInfo" style="display: none">
+        <h3>Current Student Information</h3>
+        <div class="info-grid" id="currentInfo">
+          <!-- Will be filled dynamically -->
+        </div>
+      </div>
+
+      <form id="updateStudentForm">
+        <div class="form-container" id="updateForm">
+          <div class="form-group">
+            <label for="name">Student Name *</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              placeholder="Enter full name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Subject *</label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              required
+              placeholder="Enter subject name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="full">Full Marks *</label>
+            <input
+              type="number"
+              id="full"
+              name="full"
+              required
+              min="1"
+              placeholder="e.g., 100"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="pass">Pass Marks *</label>
+            <input
+              type="number"
+              id="pass"
+              name="pass"
+              required
+              min="0"
+              placeholder="e.g., 40"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="obtain">Obtained Marks *</label>
+            <input
+              type="number"
+              id="obtain"
+              name="obtain"
+              required
+              min="0"
+              placeholder="Enter obtained marks"
+            />
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="submit-btn"
+          id="updateBtn"
+          style="display: none"
+        >
+          📝 Update Student
+        </button>
+      </form>
+    </div>
+
+    <script src="/js/api-service.js"></script>
+    <script>
+      let currentStudent = null;
+
+      // Search student by roll
+      document
+        .getElementById('searchForm')
+        .addEventListener('submit', async function (e) {
+          e.preventDefault();
+
+          const roll = document.getElementById('searchRoll').value;
+
+          if (!roll) {
+            showMessage('Please enter a roll number', 'error');
+            return;
+          }
+
+          showMessage('Searching for student...', 'info');
+
+          const response = await StudentService.getStudentByRoll(roll);
+
+          if (response.success) {
+            currentStudent = response.data;
+            displayStudentInfo(currentStudent);
+            populateUpdateForm(currentStudent);
+
+            document.getElementById('studentInfo').style.display = 'block';
+            document.getElementById('updateForm').classList.add('active');
+            document.getElementById('updateBtn').style.display = 'block';
+
+            showMessage(
+              '✅ Student found! You can now update the information.',
+              'success'
+            );
+          } else {
+            showMessage('❌ ' + response.error, 'error');
+            hideUpdateForm();
+          }
+        });
+
+      // Display student information
+      function displayStudentInfo(student) {
+        const infoGrid = document.getElementById('currentInfo');
+
+        infoGrid.innerHTML = `
+                <div class="info-item">
+                    <div class="info-label">Roll Number</div>
+                    <div class="info-value">${student.roll}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Name</div>
+                    <div class="info-value">${student.name}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Subject</div>
+                    <div class="info-value">${student.subject}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Marks</div>
+                    <div class="info-value">${student.obtain}/${
+          student.full
+        }</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Percentage</div>
+                    <div class="info-value">${student.percentage.toFixed(
+                      2
+                    )}%</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Result</div>
+                    <div class="info-value" style="color: ${
+                      student.result === 'Pass' ? '#27ae60' : '#e74c3c'
+                    }">
+                        ${student.result}
+                    </div>
+                </div>
+            `;
+      }
+
+      // Populate update form
+      function populateUpdateForm(student) {
+        document.getElementById('name').value = student.name;
+        document.getElementById('subject').value = student.subject;
+        document.getElementById('full').value = student.full;
+        document.getElementById('pass').value = student.pass;
+        document.getElementById('obtain').value = student.obtain;
+      }
+
+      // Hide update form
+      function hideUpdateForm() {
+        document.getElementById('studentInfo').style.display = 'none';
+        document.getElementById('updateForm').classList.remove('active');
+        document.getElementById('updateBtn').style.display = 'none';
+        document.getElementById('updateStudentForm').reset();
+      }
+
+      // Update student
+      document
+        .getElementById('updateStudentForm')
+        .addEventListener('submit', async function (e) {
+          e.preventDefault();
+
+          if (!currentStudent) {
+            showMessage('Please search for a student first', 'error');
+            return;
+          }
+
+          const updateData = {
+            name: document.getElementById('name').value,
+            subject: document.getElementById('subject').value,
+            full: parseInt(document.getElementById('full').value),
+            pass: parseInt(document.getElementById('pass').value),
+            obtain: parseInt(document.getElementById('obtain').value),
+          };
+
+          // Validate marks
+          if (updateData.obtain > updateData.full) {
+            showMessage('Obtained marks cannot exceed full marks!', 'error');
+            return;
+          }
+
+          showMessage('Updating student information...', 'info');
+
+          const response = await StudentService.updateStudent(
+            currentStudent.roll,
+            updateData
+          );
+
+          if (response.success) {
+            showMessage('✅ Student updated successfully!', 'success');
+
+            // Update current student info
+            currentStudent = response.data;
+            displayStudentInfo(currentStudent);
+
+            // Auto-redirect after 2 seconds
+            setTimeout(() => {
+              window.location.href = '/view-students';
+            }, 2000);
+          } else {
+            showMessage('❌ Error: ' + response.error, 'error');
+          }
+        });
+
+      // Show message
+      function showMessage(text, type) {
+        const messageDiv = document.getElementById('message');
+        messageDiv.textContent = text;
+        messageDiv.className = 'message ' + type;
+        messageDiv.style.display = 'block';
+
+        if (type !== 'info') {
+          setTimeout(() => {
+            messageDiv.style.display = 'none';
+          }, 5000);
+        }
+      }
+    </script>
+  </body>
+</html>
